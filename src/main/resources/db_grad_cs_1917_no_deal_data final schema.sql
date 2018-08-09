@@ -45,6 +45,7 @@ UNLOCK TABLES;
 --
 -- Table structure for table `counterparty`
 --
+#RENAME deal TO dealfull;
 
 DROP TABLE IF EXISTS `counterparty`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -94,10 +95,6 @@ ON dealfull.deal_id=deal.deal_id
 RIGHT JOIN counterparty ON dealfull.counterparty_name=counterparty.counterparty_name
 RIGHT JOIN instrument ON dealfull.instrument_name=instrument.instrument_name;
 
-
-/*INSERT dealfulldealfulldealfullINTO deal (deal_ID, deal_time, deal_type,deal_amount,deal_quantity)
-SELECT DISTINCT deal_ID, deal_time, deal_type, deal_amount, deal_quantity FROM db_grad.dealfull;
-*/
 
 
 --
@@ -152,6 +149,7 @@ UNLOCK TABLES;
 --
 -- Table structure for table `users`
 --
+RENAME TABLE users to usersfull;
 
 DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -162,6 +160,12 @@ CREATE TABLE `users` (
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+INSERT INTO users 
+SELECT usersfull.user_id, usersfull.user_pwd
+FROM usersfull LEFT JOIN users ON usersfull.user_id=users.user_id;
+
+
 
 --
 -- Dumping data for table `users`
