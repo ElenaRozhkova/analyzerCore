@@ -25,3 +25,5 @@ hs_err_pid*
 /target/
 >>>>>>> db-access
 /nbproject/
+
+.DS_Store

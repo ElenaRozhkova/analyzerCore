@@ -27,11 +27,11 @@ public class DBConnector
     static  private DBConnector itsSelf = null;
     
     private Connection itsConnection;
-    private String  dbDriver ="";   //  "com.mysql.jdbc.Driver";
-    private String  dbPath = "";    //  "jdbc:mysql://52.209.91.145/";
-    private String  dbName = "";    //  "db_grad_cs_1916";
-    private String  dbUser = "";    //  "selvyn";
-    private String  dbPwd = "";     //  "dbGradProg2016";
+    private String  dbDriver ="com.mysql.jdbc.Driver";   //  "com.mysql.jdbc.Driver";
+    private String  dbPath = "jdbc:mysql://localhost:3307/";    //  "jdbc:mysql://52.209.91.145/";
+    private String  dbName = "db_grad";    //  "db_grad_cs_1916";
+    private String  dbUser = "root";    //  "selvyn";
+    private String  dbPwd = "ppp";     //  "dbGradProg2016";
 
     static  public  DBConnector getConnector() throws IOException
     {
