@@ -23,9 +23,14 @@ CREATE DATABASE db_grad_cs_1917;
 
 #USE db_grad_cs_1917;
 USE db_grad;
+#RENAME deal TO dealfull;
+
+/*
 DROP TABLE IF EXISTS `anonymous_users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*
+/*!40101 SET character_set_client = utf8 */; 
+/*
 CREATE TABLE `anonymous_users` (
   `anonymous_user_id` char(40) NOT NULL,
   `anonymous_user_pwd` char(20) DEFAULT NULL,
@@ -36,16 +41,17 @@ CREATE TABLE `anonymous_users` (
 --
 -- Dumping data for table `anonymous_users`
 --
-
+/*
 LOCK TABLES `anonymous_users` WRITE;
 /*!40000 ALTER TABLE `anonymous_users` DISABLE KEYS */;
+/*
 /*!40000 ALTER TABLE `anonymous_users` ENABLE KEYS */;
-UNLOCK TABLES;
+#UNLOCK TABLES;
 
 --
 -- Table structure for table `counterparty`
 --
-#RENAME deal TO dealfull;
+
 
 DROP TABLE IF EXISTS `counterparty`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -120,10 +126,12 @@ ON dealfull.instrument_name=instrument.instrument_name;
 --
 -- Table structure for table `login_trail`
 --
-
+/*
 DROP TABLE IF EXISTS `login_trail`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*
 /*!40101 SET character_set_client = utf8 */;
+/*
 CREATE TABLE `login_trail` (
   `login_id` int(11) NOT NULL,
   `logged_in_user_id` char(40) NOT NULL,
@@ -140,16 +148,18 @@ CREATE TABLE `login_trail` (
 --
 -- Dumping data for table `login_trail`
 --
-
+/*
 LOCK TABLES `login_trail` WRITE;
 /*!40000 ALTER TABLE `login_trail` DISABLE KEYS */;
+/*
 /*!40000 ALTER TABLE `login_trail` ENABLE KEYS */;
+/*
 UNLOCK TABLES;
-
+*/
 --
 -- Table structure for table `users`
 --
-RENAME TABLE users to usersfull;
+#RENAME TABLE users to usersfull;
 
 DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -164,7 +174,6 @@ CREATE TABLE `users` (
 INSERT INTO users 
 SELECT usersfull.user_id, usersfull.user_pwd
 FROM usersfull LEFT JOIN users ON usersfull.user_id=users.user_id;
-
 
 
 --
