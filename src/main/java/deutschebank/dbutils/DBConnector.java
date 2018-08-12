@@ -28,7 +28,7 @@ public class DBConnector
     
     private Connection itsConnection;
     private String  dbDriver ="com.mysql.jdbc.Driver";   //  "com.mysql.jdbc.Driver";
-    private String  dbPath = "jdbc:mysql://localhost:3307/";    //  "jdbc:mysql://52.209.91.145/";
+    private String  dbPath = "jdbc:mysql://127.0.0.1:3307/";    //  "jdbc:mysql://52.209.91.145/";
     private String  dbName = "db_grad";    //  "db_grad_cs_1916";
     private String  dbUser = "root";    //  "selvyn";
     private String  dbPwd = "ppp";     //  "dbGradProg2016";
@@ -65,6 +65,7 @@ public class DBConnector
                                                     dbUser, 
                                                     dbPwd );
 
+
             /*
             MainUnit.log( itsConnection.getCatalog() );
 
@@ -91,10 +92,12 @@ public class DBConnector
         catch( ClassNotFoundException | SQLException e )
         {
            e.printStackTrace();
+
+
         }
         
         MainUnit.log("On Exit -> DBConnector.connect()");
-
+    	
         return result;
     }
 }
