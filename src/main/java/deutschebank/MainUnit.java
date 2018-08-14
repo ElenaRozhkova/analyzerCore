@@ -6,8 +6,8 @@
 package deutschebank;
 
 import deutschebank.dbutils.DBConnector;
-import deutschebank.dbutils.Instrument;
-import deutschebank.dbutils.InstrumentHandler;
+import deutschebank.entities.Instrument;
+import deutschebank.entities.InstrumentHandler;
 import deutschebank.dbutils.PropertyLoader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,8 +15,8 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import deutschebank.dbutils.User;
-import deutschebank.dbutils.UserHandler;
+import deutschebank.entities.User;
+import deutschebank.entities.UserHandler;
 import java.io.File;
 import java.util.logging.FileHandler;
 
@@ -43,8 +43,8 @@ public class MainUnit
             
             connector.connect( pp );
             
-            InstrumentHandler theInstrumentHandler = InstrumentHandler.getLoader();
-            Instrument theInstrument = theInstrumentHandler.loadFromDB(pp.getProperty("dbName"), connector.getConnection(), 2);
+            InstrumentHandler theInstrumentHandler = InstrumentHandler.getLoader(); //What is it
+            Instrument theInstrument = theInstrumentHandler.loadFromDB(pp.getProperty("dbName"), connector.getConnection(), 2); // 2?
             
             if( theInstrument != null )
             {
@@ -59,9 +59,9 @@ public class MainUnit
                 {
                     System.out.println( instrument.getInstrumentID() + "//" + instrument.getInstrumentName() );
                 }
-            );
+            );// What are these instrumets
             
-            // Now convert the Instrument instane into a JSON object
+            // Now convert the Instrument instane into a JSON object 
             ObjectMapper mapper = new ObjectMapper();
             // Convert object to JSON string and save into a file directly
             mapper.writeValue(new File("instrument.json"), theInstrument);

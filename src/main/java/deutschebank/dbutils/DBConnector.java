@@ -6,6 +6,8 @@
 package deutschebank.dbutils;
 
 import deutschebank.MainUnit;
+
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -27,7 +29,7 @@ public class DBConnector
     static  private DBConnector itsSelf = null;
     
     private Connection itsConnection;
-    private String  dbDriver ="";   //  "com.mysql.jdbc.Driver";
+    private String  dbDriver = "";   //  "com.mysql.jdbc.Driver";
     private String  dbPath = "";    //  "jdbc:mysql://52.209.91.145/";
     private String  dbName = "";    //  "db_grad_cs_1916";
     private String  dbUser = "";    //  "selvyn";

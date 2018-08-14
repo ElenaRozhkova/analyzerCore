@@ -7,8 +7,8 @@ package deutschebank.core;
 
 import deutschebank.MainUnit;
 import deutschebank.dbutils.DBConnector;
-import deutschebank.dbutils.User;
-import deutschebank.dbutils.UserHandler;
+import deutschebank.entities.User;
+import deutschebank.entities.UserHandler;
 import java.io.IOException;
 import java.util.Properties;
 import java.util.logging.Level;
