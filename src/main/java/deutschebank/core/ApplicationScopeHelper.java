@@ -7,9 +7,12 @@ package deutschebank.core;
 
 import deutschebank.MainUnit;
 import deutschebank.dbutils.DBConnector;
+import deutschebank.dbutils.Instrument;
+import deutschebank.dbutils.InstrumentHandler;
 import deutschebank.dbutils.User;
 import deutschebank.dbutils.UserHandler;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,6 +24,7 @@ import java.util.logging.Logger;
 public class ApplicationScopeHelper
 {
 
+	private String dbID = "db_grad";
     private String itsInfo = "NOT SET";
     private DBConnector itsConnector = null;
 
@@ -76,6 +80,23 @@ public class ApplicationScopeHelper
             Logger.getLogger(ApplicationScopeHelper.class.getName()).log(Level.SEVERE, null, ex);
         }
         return theUser;
+    }
+    
+    public ArrayList<Instrument> getAllInstruments() {
+    	ArrayList<Instrument> instruments = null;
+    	
+    	try
+        {
+            InstrumentHandler theInstrumentHandler = InstrumentHandler.getLoader();
+            
+            instruments = theInstrumentHandler.loadFromDB( this.dbID, DBConnector.getConnector().getConnection() );
+            
+        } catch (IOException ex)
+        {
+            Logger.getLogger(ApplicationScopeHelper.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    	
+    	return instruments;
     }
 
 }

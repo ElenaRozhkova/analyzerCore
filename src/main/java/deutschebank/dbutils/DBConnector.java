@@ -39,6 +39,11 @@ public class DBConnector
              itsSelf = new DBConnector();
         return itsSelf;
     }
+    static  public  String getDbName()
+    {
+    	return null;
+        //return dbName;
+    }
     private DBConnector(){}
     
     public  Connection  getConnection()
