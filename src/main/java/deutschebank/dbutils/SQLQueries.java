@@ -13,11 +13,6 @@ import java.util.logging.Logger;
 import javax.json.JsonObject;
 
 import java.sql.*;
-//import org.json.simple.JSONObject;
-//import org.json.JsonObject;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.sql.*;
@@ -51,23 +46,20 @@ public class SQLQueries {
 	/* convert output to JSON objects and return String */
 	/* convert output to JSON objects and return String */
 	public static  String toJSON(String[][] input) {
-		String result = "<Some value from the server>";
-
-		JSONArray parentJsonArray = new JSONArray();
-
-		// loop through your elements
-		for (int i = 0; i < input[0].length; i++) {
-			JSONArray childJsonArray = new JSONArray();
-			for (int j = 0; j < input[1].length; j++) {
-				//JSONObject jsonObject = new JSONObject();
-				//jsonObject.put("time",Double.toString(input[i][j]));
-				
-				childJsonArray.put(input[i][j]);
-			}
-			parentJsonArray.put(childJsonArray);
-		}
-		//System.out.println(parentJsonArray.toString());
-		return result;
+        String result = "<Some value from the server>";
+        try
+        {
+            ObjectMapper mapper = new ObjectMapper();
+            result = mapper.writeValueAsString(input);
+        } 
+        catch (JsonProcessingException ex)
+        {
+            Logger.getLogger(UserHandler.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex)
+        {
+            Logger.getLogger(UserHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
 	}
 
 	public static String[][] instrumentBuyPriceVsTime(int instrumentID) {
