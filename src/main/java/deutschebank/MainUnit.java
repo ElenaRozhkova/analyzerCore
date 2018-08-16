@@ -6,8 +6,8 @@
 package deutschebank;
 
 import deutschebank.dbutils.DBConnector;
-import deutschebank.entities.Instrument;
-import deutschebank.entities.InstrumentHandler;
+import deutschebank.dbutils.Instrument;
+import deutschebank.dbutils.InstrumentHandler;
 import deutschebank.dbutils.PropertyLoader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,8 +15,8 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import deutschebank.entities.User;
-import deutschebank.entities.UserHandler;
+import deutschebank.dbutils.User;
+import deutschebank.dbutils.UserHandler;
 import java.io.File;
 import java.util.logging.FileHandler;
 

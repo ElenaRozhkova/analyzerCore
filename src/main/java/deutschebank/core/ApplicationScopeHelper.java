@@ -5,10 +5,17 @@
  */
 package deutschebank.core;
 
+import java.util.ArrayList;
 import deutschebank.MainUnit;
 import deutschebank.dbutils.DBConnector;
-import deutschebank.entities.User;
-import deutschebank.entities.UserHandler;
+import deutschebank.dbutils.User;
+import deutschebank.dbutils.UserHandler;
+import deutschebank.dbutils.Instrument;
+import deutschebank.dbutils.InstrumentHandler;
+import deutschebank.dbutils.Deal;
+import deutschebank.dbutils.DealHandler;
+import deutschebank.dbutils.Counterparty;
+import deutschebank.dbutils.CounterpartyHandler;
 import java.io.IOException;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -21,6 +28,7 @@ import java.util.logging.Logger;
 public class ApplicationScopeHelper
 {
 
+	private String dbID = "db_grad";
     private String itsInfo = "NOT SET";
     private DBConnector itsConnector = null;
 
@@ -77,5 +85,57 @@ public class ApplicationScopeHelper
         }
         return theUser;
     }
+    
+    public ArrayList<Instrument> getAllInstruments() {
+    	ArrayList<Instrument> instruments = null;
+    	
+    	try
+        {
+            InstrumentHandler theInstrumentHandler = InstrumentHandler.getLoader();
+            
+            instruments = theInstrumentHandler.loadFromDB( this.dbID, DBConnector.getConnector().getConnection() );
+            
+        } catch (IOException ex)
+        {
+            Logger.getLogger(ApplicationScopeHelper.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    	
+    	return instruments;
+    }
+    
+    public ArrayList<Deal> getAllDeals() {
+    	ArrayList<Deal> deals = null;
+    	
+    	try
+        {
+    		DealHandler theDealHandler = DealHandler.getLoader();
+            
+            deals = theDealHandler.loadFromDB( this.dbID, DBConnector.getConnector().getConnection() );
+            
+        } catch (IOException ex)
+        {
+            Logger.getLogger(ApplicationScopeHelper.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    	
+    	return deals;
+    }
+    
+    public ArrayList<Counterparty> getAllCounterparties() {
+    	ArrayList<Counterparty> counterparties = null;
+    	
+    	try
+        {
+    		CounterpartyHandler theCounterpartyHandler = CounterpartyHandler.getLoader();
+            
+    		counterparties = theCounterpartyHandler.loadFromDB( this.dbID, DBConnector.getConnector().getConnection() );
+            
+        } catch (IOException ex)
+        {
+            Logger.getLogger(ApplicationScopeHelper.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    	
+    	return counterparties;
+    }
 
 }
+

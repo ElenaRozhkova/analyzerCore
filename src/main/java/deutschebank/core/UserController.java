@@ -5,8 +5,8 @@
  */
 package deutschebank.core;
 
-import deutschebank.entities.User;
-import deutschebank.entities.UserHandler;
+import deutschebank.dbutils.User;
+import deutschebank.dbutils.UserHandler;
 
 /**
  *
