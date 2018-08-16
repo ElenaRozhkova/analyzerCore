@@ -86,6 +86,7 @@ public class SQLQueries {
 	//public static String volumeBought(int instrumentID)
     //public static String[][] instrumentBuyPriceVsTime(int instrumentID)
     //public static String[][] instrumentSellPriceVsTime(int instrumentID)
+//	public static String mostTradedBy(int instrumentID)
 
 	public static String avgPriceBought(int instrumentID) {
 		String result ="";
