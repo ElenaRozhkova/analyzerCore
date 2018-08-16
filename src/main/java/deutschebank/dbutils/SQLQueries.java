@@ -300,11 +300,63 @@ public class SQLQueries {
 		return result;
 	}
 
+	
+	
 	//
 	/*****************************  END FRONT PAGE ***************************************/
 
+	// public static String[][] rawDataTable() 
 
-	
+	public static String[][] rawDataTable() {
+		int length = 0;
+		try {
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(
+					"Select COUNT(*) from deal;");
+			while (rs.next()) {
+				length = rs.getInt(1);
+
+				//System.out.println("The length is " + length);
+			}
+
+			stmt.close();
+		}
+
+		catch (Exception e) {
+			System.err.println("SQL query failed.");
+			System.err.println(e.getClass().getName());
+		}
+
+		String[][] result = new String[length][7];
+
+		try {
+			stmt = conn.createStatement();
+
+			// rs = null;
+			rs = stmt.executeQuery("Select * from deal;");
+			int i = 0;
+			while (rs.next()) {
+				System.out.println(rs.getString(1) + " " + rs.getString(2) + " " + rs.getString(3) + " " + rs.getString(4) + " " + rs.getString(5) + " " + rs.getString(6) + " " + rs.getString(7));
+				result[i][0] = rs.getString(1);
+				result[i][1] = rs.getString(2);
+				result[i][2] = rs.getString(3);
+				result[i][3] = rs.getString(4);
+				result[i][4] = rs.getString(5);
+				result[i][5] = rs.getString(6);
+				result[i][6] = rs.getString(7);
+
+
+				
+			}
+			conn.close();
+			stmt.close();
+		} catch (Exception e) {
+			System.err.println("SQL query failed.");
+			System.err.println(e.getClass().getName());
+		}
+
+		return result;
+	}
 	
 
 	public static void getAllDealAmounts() {
@@ -325,6 +377,9 @@ public class SQLQueries {
 	}
 
 }
+
+
+
 /*
  * public static void averagePrices(String startDate, String finishDate,
  * Statement stmt) throws SQLException {
