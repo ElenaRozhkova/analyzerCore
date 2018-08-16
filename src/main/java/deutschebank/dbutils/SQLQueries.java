@@ -306,6 +306,7 @@ public class SQLQueries {
 	/*****************************  END FRONT PAGE ***************************************/
 
 	// public static String[][] rawDataTable() 
+	// public static String[][] counterpartyTable()
 
 	public static String[][] rawDataTable() {
 		int length = 0;
@@ -336,7 +337,7 @@ public class SQLQueries {
 			rs = stmt.executeQuery("Select * from deal;");
 			int i = 0;
 			while (rs.next()) {
-				System.out.println(rs.getString(1) + " " + rs.getString(2) + " " + rs.getString(3) + " " + rs.getString(4) + " " + rs.getString(5) + " " + rs.getString(6) + " " + rs.getString(7));
+				// System.out.println(rs.getString(1) + " " + rs.getString(2) + " " + rs.getString(3) + " " + rs.getString(4) + " " + rs.getString(5) + " " + rs.getString(6) + " " + rs.getString(7));
 				result[i][0] = rs.getString(1);
 				result[i][1] = rs.getString(2);
 				result[i][2] = rs.getString(3);
@@ -359,14 +360,88 @@ public class SQLQueries {
 	}
 	
 
-	public static void getAllDealAmounts() {
+	//total buys, total sells, net position, realized profit and effective rate for each instrument for each counterparty
+	//counterpartytable
+	public static String[][] counterpartyTable() {
+		int length = 0;
+		try {
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(
+					"SELECT COUNT(*) FROM (SELECT c.counterparty_name, i.instrument_name,\r\n" + 
+					"       SUM(case when d.deal_type='B' then d.deal_quantity else 0 end) as total_buys,\r\n" + 
+					"       SUM(case when d.deal_type = 'S' then d.deal_quantity else 0 end) as total_sells,\r\n" + 
+					"       SUM(case when d.deal_type='B' then d.deal_quantity else 0 end) - \r\n" + 
+					"       SUM(case when d.deal_type = 'S' then d.deal_quantity else 0 end) as net_position,\r\n" + 
+					"       (SUM(case when d.deal_type='S' then d.deal_amount else 0 end)-\r\n" + 
+					"       SUM(case when d.deal_type='B' then d.deal_amount else 0 end)) as realized_profit,\r\n" + 
+					"       (AVG(case when d.deal_type='S' then d.deal_amount else 0 end)-\r\n" + 
+					"       AVG(case when d.deal_type='B' then d.deal_amount else 0 end)) * \r\n" + 
+					"       SUM(case when d.deal_type = 'S' then deal_quantity else 0 end)\r\n" + 
+					"       +\r\n" + 
+					"       ((SUM(case when d.deal_type='B' then d.deal_quantity else 0 end) - \r\n" + 
+					"       SUM(case when d.deal_type = 'S' then d.deal_quantity else 0 end))\r\n" + 
+					"	*\r\n" + 
+					"	   (SELECT deal_amount FROM deal ORDER BY deal_time desc LIMIT 1)\r\n" + 
+					"       -\r\n" + 
+					"       AVG(case when d.deal_type='S' then d.deal_amount else 0 end)) as effective_profit\r\n" + 
+					"FROM deal d\r\n" + 
+					"JOIN counterparty c ON d.deal_counterparty_id=c.counterparty_id\r\n" + 
+					"JOIN instrument i ON d.deal_instrument_id=i.instrument_id\r\n" + 
+					"GROUP BY c.counterparty_name,i.instrument_id) AS x;");
+			while (rs.next()) {
+				length = rs.getInt(1);
+
+				//System.out.println("The length is " + length);
+			}
+
+			stmt.close();
+		}
+
+		catch (Exception e) {
+			System.err.println("SQL query failed.");
+			System.err.println(e.getClass().getName());
+		}
+
+		String[][] result = new String[length][7];
+
 		try {
 			stmt = conn.createStatement();
 
-			rs = stmt.executeQuery("SELECT deal_amount FROM db_grad.dealfull");
+			// rs = null;
+			rs = stmt.executeQuery("SELECT c.counterparty_name, i.instrument_name,\r\n" + 
+					"       SUM(case when d.deal_type='B' then d.deal_quantity else 0 end) as total_buys,\r\n" + 
+					"       SUM(case when d.deal_type = 'S' then d.deal_quantity else 0 end) as total_sells,\r\n" + 
+					"       SUM(case when d.deal_type='B' then d.deal_quantity else 0 end) - \r\n" + 
+					"       SUM(case when d.deal_type = 'S' then d.deal_quantity else 0 end) as net_position,\r\n" + 
+					"       (SUM(case when d.deal_type='S' then d.deal_amount else 0 end)-\r\n" + 
+					"       SUM(case when d.deal_type='B' then d.deal_amount else 0 end)) as realized_profit,\r\n" + 
+					"       (AVG(case when d.deal_type='S' then d.deal_amount else 0 end)-\r\n" + 
+					"       AVG(case when d.deal_type='B' then d.deal_amount else 0 end)) * \r\n" + 
+					"       SUM(case when d.deal_type = 'S' then deal_quantity else 0 end)\r\n" + 
+					"       +\r\n" + 
+					"       ((SUM(case when d.deal_type='B' then d.deal_quantity else 0 end) - \r\n" + 
+					"       SUM(case when d.deal_type = 'S' then d.deal_quantity else 0 end))\r\n" + 
+					"	*\r\n" + 
+					"	   (SELECT deal_amount FROM deal ORDER BY deal_time desc LIMIT 1)\r\n" + 
+					"       -\r\n" + 
+					"       AVG(case when d.deal_type='S' then d.deal_amount else 0 end)) as effective_profit\r\n" + 
+					"FROM deal d\r\n" + 
+					"JOIN counterparty c ON d.deal_counterparty_id=c.counterparty_id\r\n" + 
+					"JOIN instrument i ON d.deal_instrument_id=i.instrument_id\r\n" + 
+					"GROUP BY c.counterparty_name,i.instrument_id;");
+			int i = 0;
 			while (rs.next()) {
-				String deal_amt = rs.getString("deal_amount");
-				System.out.println(deal_amt);
+				 System.out.println(rs.getString(1) + " " + rs.getString(2) + " " + rs.getString(3) + " " + rs.getString(4) + " " + rs.getString(5) + " " + rs.getString(6) + " " + rs.getString(7));
+				result[i][0] = rs.getString(1);
+				result[i][1] = rs.getString(2);
+				result[i][2] = rs.getString(3);
+				result[i][3] = rs.getString(4);
+				result[i][4] = rs.getString(5);
+				result[i][5] = rs.getString(6);
+				result[i][6] = rs.getString(7);
+
+
+				
 			}
 			conn.close();
 			stmt.close();
@@ -374,7 +449,13 @@ public class SQLQueries {
 			System.err.println("SQL query failed.");
 			System.err.println(e.getClass().getName());
 		}
+
+		return result;
 	}
+
+
+	
+	
 
 }
 
