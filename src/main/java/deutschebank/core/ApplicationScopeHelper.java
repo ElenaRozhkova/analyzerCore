@@ -5,14 +5,18 @@
  */
 package deutschebank.core;
 
+import java.util.ArrayList;
 import deutschebank.MainUnit;
 import deutschebank.dbutils.DBConnector;
-import deutschebank.dbutils.Instrument;
-import deutschebank.dbutils.InstrumentHandler;
 import deutschebank.dbutils.User;
 import deutschebank.dbutils.UserHandler;
+import deutschebank.dbutils.Instrument;
+import deutschebank.dbutils.InstrumentHandler;
+import deutschebank.dbutils.Deal;
+import deutschebank.dbutils.DealHandler;
+import deutschebank.dbutils.Counterparty;
+import deutschebank.dbutils.CounterpartyHandler;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -98,5 +102,40 @@ public class ApplicationScopeHelper
     	
     	return instruments;
     }
+    
+    public ArrayList<Deal> getAllDeals() {
+    	ArrayList<Deal> deals = null;
+    	
+    	try
+        {
+    		DealHandler theDealHandler = DealHandler.getLoader();
+            
+            deals = theDealHandler.loadFromDB( this.dbID, DBConnector.getConnector().getConnection() );
+            
+        } catch (IOException ex)
+        {
+            Logger.getLogger(ApplicationScopeHelper.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    	
+    	return deals;
+    }
+    
+    public ArrayList<Counterparty> getAllCounterparties() {
+    	ArrayList<Counterparty> counterparties = null;
+    	
+    	try
+        {
+    		CounterpartyHandler theCounterpartyHandler = CounterpartyHandler.getLoader();
+            
+    		counterparties = theCounterpartyHandler.loadFromDB( this.dbID, DBConnector.getConnector().getConnection() );
+            
+        } catch (IOException ex)
+        {
+            Logger.getLogger(ApplicationScopeHelper.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    	
+    	return counterparties;
+    }
 
 }
+

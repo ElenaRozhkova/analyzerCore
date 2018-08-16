@@ -43,8 +43,8 @@ public class MainUnit
             
             connector.connect( pp );
             
-            InstrumentHandler theInstrumentHandler = InstrumentHandler.getLoader();
-            Instrument theInstrument = theInstrumentHandler.loadFromDB(pp.getProperty("dbName"), connector.getConnection(), 2);
+            InstrumentHandler theInstrumentHandler = InstrumentHandler.getLoader(); //What is it
+            Instrument theInstrument = theInstrumentHandler.loadFromDB(pp.getProperty("dbName"), connector.getConnection(), 2); // 2?
             
             if( theInstrument != null )
             {
@@ -59,9 +59,9 @@ public class MainUnit
                 {
                     System.out.println( instrument.getInstrumentID() + "//" + instrument.getInstrumentName() );
                 }
-            );
+            );// What are these instrumets
             
-            // Now convert the Instrument instane into a JSON object
+            // Now convert the Instrument instane into a JSON object 
             ObjectMapper mapper = new ObjectMapper();
             // Convert object to JSON string and save into a file directly
             mapper.writeValue(new File("instrument.json"), theInstrument);
