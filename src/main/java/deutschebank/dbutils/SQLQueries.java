@@ -81,7 +81,7 @@ public class SQLQueries {
 	// public static String[][] instrumentBuyPriceVsTime(int instrumentID)
 	// public static String[][] instrumentSellPriceVsTime(int instrumentID)
 	// public static String mostTradedBy(int instrumentID)
-
+//public static String[] instrumentPriceInfo(int instrumentID)
 	public static String avgPriceBought(int instrumentID) {
 		String result = "";
 		try {
@@ -279,6 +279,41 @@ public class SQLQueries {
 		return result;
 	}
 
+	public static String[] instrumentPriceInfo(int instrumentID)
+	{
+		String[] result = new String[3];
+		double[] prices=new double[2];
+		int i=0;
+		try {
+			stmt = conn.createStatement();
+
+			rs = stmt.executeQuery("SELECT i.instrument_id, d.deal_amount\r\n" + 
+					"FROM deal d \r\n" + 
+					"JOIN instrument i ON d.deal_instrument_id=i.instrument_id\r\n" + 
+					"WHERE i.instrument_id="+instrumentID+"\r\n" + 
+					"ORDER BY d.deal_time desc LIMIT 2;\r\n");
+			
+			while (rs.next()) {
+				prices[i++]= Double.parseDouble(rs.getString(2));
+			}
+			conn.close();
+			stmt.close();
+		} catch (Exception e) {
+			System.err.println("SQL query failed.");
+			System.err.println(e.getClass().getName());
+		}
+		result[0]=""+prices[0];
+		double dif = prices[0]/prices[1];
+		if(dif>=1) dif=dif-1;
+		else dif=-(1-dif);
+		result[1]=""+dif;
+		dif*=100;
+		result[2]=""+dif+"%";
+		
+		//for(int x=0;x<3;x++)
+		//	System.out.println(result[x]);
+		return result;
+	}
 	//
 	/*****************************
 	 * END FRONT PAGE
