@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 public class ApplicationScopeHelper
 {
 
-	private String dbID = "db_grad";
+	private String dbID = "db_grad_cs_1917";
     private String itsInfo = "NOT SET";
     private DBConnector itsConnector = null;
 
