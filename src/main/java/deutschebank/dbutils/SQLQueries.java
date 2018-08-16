@@ -370,7 +370,8 @@ public class SQLQueries {
 			rs = stmt.executeQuery("SELECT d.deal_id, d.deal_time, d.deal_type, d.deal_amount,\r\n"
 					+ "d.deal_quantity, i.instrument_name, c.counterparty_name\r\n" + "FROM deal d\r\n"
 					+ "JOIN instrument i ON d.deal_instrument_id=i.instrument_id\r\n"
-					+ "JOIN counterparty c ON d.deal_counterparty_id=c.counterparty_id\r\n" + "LIMIT 20;");
+					+ "JOIN counterparty c ON d.deal_counterparty_id=c.counterparty_id\r\n;");
+			// + LIMIT(20)
 			int i = 0;
 			while (rs.next()) {
 				// System.out.println(rs.getString(1) + " " + rs.getString(2) + " " +
