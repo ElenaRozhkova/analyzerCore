@@ -313,7 +313,12 @@ public class SQLQueries {
 		try {
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(
-					"Select COUNT(*) from deal;");
+					"SELECT d.deal_id, d.deal_time, d.deal_type, d.deal_amount,\r\n" + 
+					"d.deal_quantity, i.instrument_name, c.counterparty_name\r\n" + 
+					"FROM deal d\r\n" + 
+					"JOIN instrument i ON d.deal_instrument_id=i.instrument_id\r\n" + 
+					"JOIN counterparty c ON d.deal_counterparty_id=c.counterparty_id\r\n" + 
+					"LIMIT 20;");
 			while (rs.next()) {
 				length = rs.getInt(1);
 
