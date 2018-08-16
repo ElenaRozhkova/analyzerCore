@@ -64,6 +64,8 @@ public class DBConnector
             dbUser = properties.getProperty("dbUser");
             dbPwd = properties.getProperty("dbPwd");
           
+            
+            
             Class.forName( dbDriver );
 
             itsConnection = DriverManager.getConnection(dbPath + dbName, 

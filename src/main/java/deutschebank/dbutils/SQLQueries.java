@@ -62,6 +62,23 @@ public class SQLQueries {
         return result;
 	}
 	
+	public static  String toJSON(String input) {
+        String result = "<Some value from the server>";
+        try
+        {
+            ObjectMapper mapper = new ObjectMapper();
+            result = mapper.writeValueAsString(input);
+        } 
+        catch (JsonProcessingException ex)
+        {
+            Logger.getLogger(UserHandler.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex)
+        {
+            Logger.getLogger(UserHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
+	}
+	
 	/*********************************  FRONT PAGE ***************************************/
 	//public static String avgPriceBought(int instrumentID)
 	//public static String avgPriceSold(int instrumentID)
