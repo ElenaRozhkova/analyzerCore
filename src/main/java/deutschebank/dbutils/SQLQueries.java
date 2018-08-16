@@ -328,7 +328,7 @@ public class SQLQueries {
 				result[i][4] = rs.getString(5);
 				result[i][5] = rs.getString(6);
 				result[i][6] = rs.getString(7);
-
+				i++;
 			}
 			conn.close();
 			stmt.close();
@@ -412,6 +412,7 @@ public class SQLQueries {
 				result[i][4] = rs.getString(5);
 				result[i][5] = rs.getString(6);
 				result[i][6] = rs.getString(7);
+				i++;
 
 			}
 			conn.close();
