@@ -61,7 +61,139 @@ public class SQLQueries {
         }
         return result;
 	}
+	
+	/*********************************  FRONT PAGE ***************************************/
+	//public static String avgPriceBought(int instrumentID)
+	//public static String avgPriceSold(int instrumentID)
+	//public static String volumeSold(int instrumentID)
+	//public static String volumeBought(int instrumentID)
+    //public static String[][] instrumentBuyPriceVsTime(int instrumentID)
+    //public static String[][] instrumentSellPriceVsTime(int instrumentID)
 
+	public static String avgPriceBought(int instrumentID) {
+		String result ="";
+		try {
+			stmt = conn.createStatement();
+
+			rs = stmt.executeQuery("SELECT i.instrument_id instrument_id,\r\n" + 
+					"AVG(case when d.deal_type = 'B' then d.deal_amount else 0 end) as average_price_bought\r\n" + 
+					"FROM instrument i\r\n" + 
+					"JOIN deal d ON d.deal_instrument_id=i.instrument_id\r\n" + 
+					"WHERE i.instrument_id="
+					+ instrumentID + ";");
+			while (rs.next()) {
+				result = rs.getString(2);
+				//System.out.println(result);
+			}
+			conn.close();
+			stmt.close();
+		} catch (Exception e) {
+			System.err.println("SQL query failed.");
+			System.err.println(e.getClass().getName());
+		}
+		return result;
+	}
+	
+	public static String avgPriceSold(int instrumentID) {
+		String result ="";
+		try {
+			stmt = conn.createStatement();
+
+			rs = stmt.executeQuery("SELECT i.instrument_id instrument_id,\r\n" + 
+					"AVG(case when d.deal_type = 'S' then d.deal_amount else 0 end) as average_price_bought\r\n" + 
+					"FROM instrument i\r\n" + 
+					"JOIN deal d ON d.deal_instrument_id=i.instrument_id\r\n" + 
+					"WHERE i.instrument_id="
+					+ instrumentID + ";");
+			while (rs.next()) {
+				result = rs.getString(2);
+			//	System.out.println(result);
+			}
+			conn.close();
+			stmt.close();
+		} catch (Exception e) {
+			System.err.println("SQL query failed.");
+			System.err.println(e.getClass().getName());
+		}
+		return result;
+	}
+
+	public static String volumeBought(int instrumentID)
+	{
+		String result ="";
+		try {
+			stmt = conn.createStatement();
+
+			rs = stmt.executeQuery("SELECT i.instrument_id instrument_id,\r\n" + 
+					"SUM(case when d.deal_type = 'B' then d.deal_quantity else 0 end) volume_bought\r\n" + 
+					"FROM instrument i\r\n" + 
+					"JOIN deal d ON d.deal_instrument_id=i.instrument_id\r\n" + 
+					"WHERE i.instrument_id="
+					+ instrumentID + ";");
+			while (rs.next()) {
+				result = rs.getString(2);
+				//System.out.println(result);
+			}
+			conn.close();
+			stmt.close();
+		} catch (Exception e) {
+			System.err.println("SQL query failed.");
+			System.err.println(e.getClass().getName());
+		}
+		return result;
+	}
+	
+	public static String volumeSold(int instrumentID)
+	{
+		String result ="";
+		try {
+			stmt = conn.createStatement();
+
+			rs = stmt.executeQuery("SELECT i.instrument_id instrument_id,\r\n" + 
+					"SUM(case when d.deal_type = 'S' then d.deal_quantity else 0 end) volume_sold\r\n" + 
+					"FROM instrument i\r\n" + 
+					"JOIN deal d ON d.deal_instrument_id=i.instrument_id\r\n" + 
+					"WHERE i.instrument_id="
+					+ instrumentID + ";");
+			while (rs.next()) {
+				result = rs.getString(2);
+			}
+			conn.close();
+			stmt.close();
+		} catch (Exception e) {
+			System.err.println("SQL query failed.");
+			System.err.println(e.getClass().getName());
+		}
+		return result;
+	}
+	
+	public static String mostTradedBy(int instrumentID)
+	{
+		String result ="";
+		try {
+			stmt = conn.createStatement();
+
+			rs = stmt.executeQuery("SELECT i.instrument_id instrument_id, c.counterparty_name,SUM(d.deal_quantity) \r\n" + 
+					"FROM deal d\r\n" + 
+					"JOIN counterparty c ON d.deal_counterparty_id=c.counterparty_id\r\n" + 
+					"JOIN instrument i ON d.deal_instrument_id=i.instrument_id\r\n" + 
+					"WHERE i.instrument_id=" + instrumentID+"\r\n" + 
+					"GROUP BY c.counterparty_name\r\n" + 
+					"ORDER BY SUM(d.deal_quantity) DESC\r\n" + 
+					"LIMIT 1;");
+			while (rs.next()) {
+				result = rs.getString(2);
+			}
+			conn.close();
+			stmt.close();
+		} catch (Exception e) {
+			System.err.println("SQL query failed.");
+			System.err.println(e.getClass().getName());
+		}
+		return result;
+	}
+	
+	
 	public static String[][] instrumentBuyPriceVsTime(int instrumentID) {
 		int length = 0;
 		try {
@@ -106,14 +238,39 @@ public class SQLQueries {
 		return result;
 	}
 
-	public static void instrumentSellPriceVsTime(int instrumentID) {
+	public static String[][] instrumentSellPriceVsTime(int instrumentID) {
+		int length = 0;
+		try {
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(
+					"Select COUNT(*) from deal WHERE deal_type='S' AND deal_instrument_id=" + instrumentID + ";");
+			while (rs.next()) {
+				length = rs.getInt(1);
+
+				//System.out.println("The length is " + length);
+			}
+
+			stmt.close();
+		}
+
+		catch (Exception e) {
+			System.err.println("SQL query failed.");
+			System.err.println(e.getClass().getName());
+		}
+
+		String[][] result = new String[length][2];
+
 		try {
 			stmt = conn.createStatement();
 
-			rs = stmt.executeQuery("Select deal_time, deal_amount from deal WHERE deal_type='S' AND deal_instrument_id="
+			// rs = null;
+			rs = stmt.executeQuery("Select deal_time, deal_amount from deal WHERE deal_type='B' AND deal_instrument_id="
 					+ instrumentID + ";");
+			int i = 0;
 			while (rs.next()) {
-				System.out.println(rs.getString(1) + " " + rs.getString(2));
+			//	System.out.println(rs.getString(1) + " " + rs.getString(2));
+				result[i][0] = rs.getString(1);
+				result[i++][1] = rs.getString(2);
 			}
 			conn.close();
 			stmt.close();
@@ -121,7 +278,16 @@ public class SQLQueries {
 			System.err.println("SQL query failed.");
 			System.err.println(e.getClass().getName());
 		}
+
+		return result;
 	}
+
+	//
+	/*****************************  END FRONT PAGE ***************************************/
+
+
+	
+	
 
 	public static void getAllDealAmounts() {
 		try {
