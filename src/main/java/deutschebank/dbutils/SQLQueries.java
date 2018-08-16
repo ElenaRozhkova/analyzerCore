@@ -346,11 +346,12 @@ public class SQLQueries {
 		int length = 0;
 		try {
 			stmt = conn.createStatement();
-			rs = stmt.executeQuery("SELECT COUNT(*) FROM deal;");
+			rs = stmt.executeQuery("SELECT COUNT(*) FROM deal;"
+					);
 			while (rs.next()) {
 				length = rs.getInt(1);
 
-				// System.out.println("The length is " + length);
+				//System.out.println("The length is " + length);
 			}
 
 			stmt.close();
@@ -360,23 +361,20 @@ public class SQLQueries {
 			System.err.println("SQL query failed.");
 			System.err.println(e.getClass().getName());
 		}
-
 		String[][] result = new String[length][7];
 
 		try {
 			stmt = conn.createStatement();
 
 			// rs = null;
-			rs = stmt.executeQuery("SELECT d.deal_time, d.deal_type, d.deal_amount,\r\n"
-					+ "d.deal_quantity, i.instrument_name, c.counterparty_name\r\n" + "FROM deal d\r\n"
-					+ "JOIN instrument i ON d.deal_instrument_id=i.instrument_id\r\n"
-					+ "JOIN counterparty c ON d.deal_counterparty_id=c.counterparty_id\r\n;");
-			// + LIMIT(20)
+			rs = stmt.executeQuery("SELECT d.deal_id, d.deal_time, d.deal_type, d.deal_amount,\r\n" + 
+					"d.deal_quantity, i.instrument_name, c.counterparty_name\r\n" + 
+					"FROM deal d\r\n" + 
+					"JOIN instrument i ON d.deal_instrument_id=i.instrument_id\r\n" + 
+					"JOIN counterparty c ON d.deal_counterparty_id=c.counterparty_id\r\n;");
 			int i = 0;
 			while (rs.next()) {
-				// System.out.println(rs.getString(1) + " " + rs.getString(2) + " " +
-				// rs.getString(3) + " " + rs.getString(4) + " " + rs.getString(5) + " " +
-				// rs.getString(6) + " " + rs.getString(7));
+				//System.out.println(rs.getString(1) + " " + rs.getString(2) + " " + rs.getString(3) + " " + rs.getString(4) + " " + rs.getString(5) + " " + rs.getString(6) + " " + rs.getString(7));
 				result[i][0] = rs.getString(1);
 				result[i][1] = rs.getString(2);
 				result[i][2] = rs.getString(3);
@@ -384,7 +382,9 @@ public class SQLQueries {
 				result[i][4] = rs.getString(5);
 				result[i][5] = rs.getString(6);
 				result[i][6] = rs.getString(7);
+
 				i++;
+				
 			}
 			conn.close();
 			stmt.close();
@@ -395,7 +395,7 @@ public class SQLQueries {
 
 		return result;
 	}
-
+	
 	// total buys, total sells, net position, realized profit and effective rate for
 	// each instrument for each counterparty
 	// counterpartytable
