@@ -292,6 +292,7 @@ public class SQLQueries {
 		return result;
 	}
 
+
 	public static String[] instrumentPriceInfo(int instrumentID)
 	{
 		String[] result = new String[3];
@@ -319,9 +320,14 @@ public class SQLQueries {
 		double dif = prices[0]/prices[1];
 		if(dif>=1) dif=dif-1;
 		else dif=-(1-dif);
-		result[1]=""+dif;
+		result[1]=String.format("%.4f", dif);
 		dif*=100;
-		result[2]=""+dif+"%";
+		if(dif>0)
+			result[1]="+"+result[1];
+		result[2]=String.format("%.2f", dif);
+		result[2]+="%";
+		if(dif>0)
+			result[2]="+"+result[2];
 		
 		//for(int x=0;x<3;x++)
 		//	System.out.println(result[x]);
